@@ -1,5 +1,3 @@
-<p align="center"><img src="assets/neil-logo.png" width="180" alt="ThreatHawk logo supplied by Neil" /></p>
-
 # ThreatHawk
 
 A terminal toolkit for DNS, public-record lookups, offline JWT inspection, and bounded website checks. Related checks are combined into **22 modules**, with the API or data source displayed before every run.
@@ -103,7 +101,7 @@ See [current verification](docs/VALIDATION.md) and the [historical 2.4.1 module 
 
 ## Branding
 
-ThreatHawk uses Neil’s supplied portrait as its project logo, with a terminal-compatible rendering at startup. The original bitmap is included unchanged in assets/neil-logo.png. The command is `threathawk` (or `python -m threathawk`); `argus` remains a compatibility command. Existing module capabilities and security boundaries are unchanged.
+The public distribution uses text-only ThreatHawk branding. It contains no portrait logo or derived portrait artwork. The command is `threathawk` (or `python -m threathawk`); `argus` remains a compatibility command.
 
 ## Attribution
 

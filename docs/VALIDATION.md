@@ -9,3 +9,7 @@ The prior 31-module live audit is retained in VALIDATION-2.4.1.md as historical 
 ## ThreatHawk 2.6.0 branding validation
 
 205 checks pass against the installed ThreatHawk package, including packaged logo data, color and no-color terminal rendering, the retained disclaimer, and existing module behavior. The supplied PNG is preserved byte-for-byte in assets/neil-logo.png. The Python package and primary command are now threathawk; argus remains a compatibility command.
+
+## Public logo removal
+
+The portrait bitmap and derived terminal portrait data have been removed from the current public source. The public startup banner is text-only; the original local installation is unchanged. The previous logo verification describes the historical 2.6.0 release.

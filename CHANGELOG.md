@@ -1,5 +1,11 @@
 # Changelog
 
+## Public branding update
+
+- Remove the portrait image and derived portrait data from the public distribution.
+- Use a text-only ThreatHawk startup banner and README.
+- Preserve the local installed portrait, module behavior, disclaimer and upstream license.
+
 ## 2.6.1 (local changes)
 
 - Verify every module with varied examples: 81 cases with no code failures.
