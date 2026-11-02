@@ -9,78 +9,40 @@
       "script": "dns_over_https.py",
       "input_type": "domain",
       "example": "example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "API: Google DNS-over-HTTPS",
+      "source_details": "dns.google \u00b7 GET /resolve"
     },
     {
       "id": "2",
-      "name": "DNS Records",
-      "description": "Ordinary DNS resolver queries only: A, AAAA, MX, NS, TXT, CNAME, SOA. No AXFR or brute force.",
+      "name": "DNS & Email Records",
+      "description": "DNS records, TXT, CAA, SPF and DMARC in one check. Nine fixed DNS queries; no AXFR, guessing or recursive SPF expansion.",
       "primary_input": "Domain",
       "options": [],
       "script": "dns_records.py",
       "input_type": "domain",
       "example": "example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: System DNS resolver",
+      "source_details": "DNS queries: A, AAAA, MX, NS, TXT, CNAME, SOA, CAA; _dmarc TXT"
     },
     {
       "id": "3",
-      "name": "IP Info",
-      "description": "Public IP information from ipwho.is only; no target connection.",
+      "name": "IP & ASN Information",
+      "description": "IP, server location, organization and ASN information from one ipwho.is request; no target connection.",
       "primary_input": "IP",
       "options": [],
       "script": "ip_info.py",
       "input_type": "ip",
       "example": "8.8.8.8",
-      "api_key": ""
-    },
-    {
-      "id": "4",
-      "name": "Server IP Information",
-      "description": "Public IP information from ipwho.is only; no target connection.",
-      "primary_input": "IP",
-      "options": [],
-      "script": "server_info.py",
-      "input_type": "ip",
-      "example": "8.8.8.8",
-      "api_key": ""
-    },
-    {
-      "id": "5",
-      "name": "TXT Records",
-      "description": "Bounded DNS record lookup; no AXFR, selector guessing or recursive expansion.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "txt_records.py",
-      "input_type": "domain",
-      "example": "example.com",
-      "api_key": ""
-    },
-    {
-      "id": "6",
-      "name": "ASN Lookup",
-      "description": "Public IP information from ipwho.is only; no target connection.",
-      "primary_input": "IP",
-      "options": [],
-      "script": "asn_lookup.py",
-      "input_type": "ip",
-      "example": "8.8.8.8",
-      "api_key": ""
-    },
-    {
-      "id": "7",
-      "name": "DNS CAA Records",
-      "description": "Ordinary CAA lookup for the supplied domain only; no subdomain guessing.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "dns_caa_checker.py",
-      "input_type": "domain",
-      "example": "example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "API: ipwho.is IP information",
+      "source_details": "ipwho.is \u00b7 GET /{ip} (includes ASN and organization)"
     }
   ],
   "web_application_analysis": [
     {
-      "id": "8",
+      "id": "4",
       "name": "Archive History",
       "description": "Up to 50 existing Wayback CDX records; archived URLs are not fetched.",
       "primary_input": "Domain",
@@ -88,10 +50,12 @@
       "script": "archive_history.py",
       "input_type": "domain",
       "example": "example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "API: Internet Archive Wayback CDX",
+      "source_details": "web.archive.org \u00b7 GET /cdx/search/cdx"
     },
     {
-      "id": "9",
+      "id": "5",
       "name": "Cookies Analyzer",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -99,10 +63,12 @@
       "script": "cookies.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "10",
+      "id": "6",
       "name": "Robots.txt Analyzer",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -110,10 +76,12 @@
       "script": "crawl_rules.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/robots.txt"
     },
     {
-      "id": "11",
+      "id": "7",
       "name": "Sitemap Parsing",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -121,65 +89,51 @@
       "script": "sitemap.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/sitemap.xml"
     },
     {
-      "id": "12",
-      "name": "Social Media Presence Scan",
+      "id": "8",
+      "name": "Social Links Inspection",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
       "options": [],
       "script": "social_media.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "13",
-      "name": "Technology Stack Detection",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
+      "id": "9",
+      "name": "Technology & Integrations",
+      "description": "Server/generator hints and referenced integration hosts from one homepage GET; no linked asset loading.",
       "primary_input": "Domain",
       "options": [],
       "script": "technology_stack.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "14",
-      "name": "Third-Party Integrations",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "third_party_integrations.py",
-      "input_type": "website",
-      "example": "https://example.com",
-      "api_key": ""
-    },
-    {
-      "id": "15",
-      "name": "Framing Header Check",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "clickjacking_test.py",
-      "input_type": "website",
-      "example": "https://example.com",
-      "api_key": ""
-    },
-    {
-      "id": "16",
-      "name": "Form Grabber",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
+      "id": "10",
+      "name": "Form & Autocomplete Inspection",
+      "description": "Form actions, methods, field types and autocomplete settings from one homepage GET; no form submission or field values.",
       "primary_input": "Domain",
       "options": [],
       "script": "form_grabber.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "17",
+      "id": "11",
       "name": "HTML Comments Extractor",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -187,10 +141,12 @@
       "script": "html_comments_extractor.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "18",
+      "id": "12",
       "name": "CAPTCHA Presence Checker",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -198,21 +154,12 @@
       "script": "captcha_presence_checker.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "19",
-      "name": "Form Autocomplete Inspection",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "autocomplete_vulnerability_checker.py",
-      "input_type": "website",
-      "example": "https://example.com",
-      "api_key": ""
-    },
-    {
-      "id": "20",
+      "id": "13",
       "name": "Embedded Object Hunter",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -220,10 +167,12 @@
       "script": "embedded_object_hunter.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "21",
+      "id": "14",
       "name": "Pixel Tracker Finder",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -231,12 +180,14 @@
       "script": "pixel_tracker_finder.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     }
   ],
   "security_threat_intelligence": [
     {
-      "id": "22",
+      "id": "15",
       "name": "Censys Host Records",
       "description": "Retrieve an existing host record from Censys; no target connection.",
       "primary_input": "IP",
@@ -244,32 +195,25 @@
       "script": "censys.py",
       "input_type": "ip",
       "example": "8.8.8.8",
-      "api_key": "CENSYS_PAT"
+      "api_key": "CENSYS_PAT",
+      "source": "API: Censys Platform API \u00b7 Host Records",
+      "source_details": "api.platform.censys.io \u00b7 GET /v3/global/asset/host/{ip}"
     },
     {
-      "id": "23",
-      "name": "HTTP Headers",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "http_headers.py",
-      "input_type": "website",
-      "example": "https://example.com",
-      "api_key": ""
-    },
-    {
-      "id": "24",
-      "name": "HTTP Security Features",
-      "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
+      "id": "16",
+      "name": "HTTP Security & Headers",
+      "description": "Raw HTTP headers, security headers and framing policy from one homepage GET.",
       "primary_input": "Domain",
       "options": [],
       "script": "http_security.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/"
     },
     {
-      "id": "25",
+      "id": "17",
       "name": "Security.txt Check",
       "description": "One page/standard metadata GET only; no crawling, form submission, asset loading or redirects.",
       "primary_input": "Domain",
@@ -277,10 +221,12 @@
       "script": "security_txt.py",
       "input_type": "website",
       "example": "https://example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Website response \u00b7 No external API",
+      "source_details": "One GET to the supplied origin/.well-known/security.txt"
     },
     {
-      "id": "26",
+      "id": "18",
       "name": "Shodan Host Records",
       "description": "Retrieve an existing Shodan host record; no scan submission.",
       "primary_input": "IP",
@@ -288,10 +234,12 @@
       "script": "shodan.py",
       "input_type": "ip",
       "example": "8.8.8.8",
-      "api_key": "SHODAN_API_KEY"
+      "api_key": "SHODAN_API_KEY",
+      "source": "API: Shodan Host API",
+      "source_details": "api.shodan.io \u00b7 GET /shodan/host/{ip}"
     },
     {
-      "id": "27",
+      "id": "19",
       "name": "VirusTotal Record Lookup",
       "description": "Read existing domain/IP reports only; no URL scan submissions.",
       "primary_input": "Domain/IP",
@@ -299,10 +247,12 @@
       "script": "virustotal_scan.py",
       "input_type": "domain_or_ip",
       "example": "example.com or 8.8.8.8",
-      "api_key": "VIRUSTOTAL_API_KEY"
+      "api_key": "VIRUSTOTAL_API_KEY",
+      "source": "API: VirusTotal API v3",
+      "source_details": "www.virustotal.com \u00b7 GET /api/v3/ip_addresses/{ip} or /domains/{domain}"
     },
     {
-      "id": "28",
+      "id": "20",
       "name": "CT Log Query",
       "description": "Query existing certificate transparency records at crt.sh.",
       "primary_input": "Domain",
@@ -310,10 +260,12 @@
       "script": "ct_log_query.py",
       "input_type": "domain",
       "example": "example.com",
-      "api_key": ""
+      "api_key": "",
+      "source": "API: crt.sh Certificate Transparency",
+      "source_details": "crt.sh \u00b7 GET /?q=...&output=json"
     },
     {
-      "id": "29",
+      "id": "21",
       "name": "JWT Offline Decoder",
       "description": "Offline JWT header/payload decoder; signature is NOT verified.",
       "primary_input": "JWT",
@@ -321,21 +273,12 @@
       "script": "jwt_token_analyzer.py",
       "input_type": "jwt",
       "example": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJleGFtcGxlIn0.",
-      "api_key": ""
+      "api_key": "",
+      "source": "Source: Offline JWT decoder",
+      "source_details": "Local processing only; no API or network request"
     },
     {
-      "id": "30",
-      "name": "SPF / DMARC Records",
-      "description": "Bounded DNS record lookup; no AXFR, selector guessing or recursive expansion.",
-      "primary_input": "Domain",
-      "options": [],
-      "script": "spf_dkim_dmarc_validator.py",
-      "input_type": "domain",
-      "example": "example.com",
-      "api_key": ""
-    },
-    {
-      "id": "31",
+      "id": "22",
       "name": "AlienVault OTX Threat Intelligence",
       "description": "Retrieve existing OTX indicator intelligence and pulse associations. One provider GET; no target connection, uploads or scan submission.",
       "primary_input": "IP / domain / hash",
@@ -343,7 +286,9 @@
       "script": "alienvault_otx.py",
       "input_type": "otx_indicator",
       "example": "8.8.8.8, example.com, or d41d8cd98f00b204e9800998ecf8427e",
-      "api_key": "OTX_API_KEY"
+      "api_key": "OTX_API_KEY",
+      "source": "API: AlienVault OTX Indicator API",
+      "source_details": "otx.alienvault.com \u00b7 GET /api/v1/indicators/{type}/{indicator}/general"
     }
   ],
   "run_all": [],

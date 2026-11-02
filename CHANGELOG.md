@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.0
+
+- Consolidate overlapping checks into 22 consecutively numbered modules.
+- Merge IP/ASN, DNS/email, HTTP security/headers, forms/autocomplete, and technology/integrations.
+- Reuse responses within each merged module to avoid duplicate requests.
+- Display API/source and endpoint at selection and execution without credential values.
+- Keep independent threat-intelligence providers separate.
+- Pass 201 automated checks and live smoke checks for all five merged modules.
+
 ## 2.4.1
 
 - Distinguish redirects, denied requests and missing pages from empty findings.

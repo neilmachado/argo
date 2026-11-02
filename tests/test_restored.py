@@ -51,9 +51,12 @@ def test_web_body_size_capped():
         with pytest.raises(ValueError,match='size limit'):n.fetch_page('example.com')
 
 def test_dns_no_bruteforce_or_selector_guessing():
-    with patch.object(n,'dns_values',return_value=[]) as query:
-        n.lookup('spf_dkim_dmarc_validator.py','example.com')
-    assert [c.args for c in query.call_args_list]==[('example.com','TXT'),('_dmarc.example.com','TXT')]
+    from argus import passive
+    with patch('dns.resolver.Resolver.resolve',return_value=[]) as query:
+        passive.lookup('dns_records.py','example.com')
+    assert len(query.call_args_list)==9
+    assert [c.args for c in query.call_args_list][-1]==('_dmarc.example.com','TXT')
+    assert all(c.args[1]!='AXFR' for c in query.call_args_list)
 
 def test_jwt_is_offline_and_unverified():
     def part(v):return base64.urlsafe_b64encode(json.dumps(v).encode()).decode().rstrip('=')

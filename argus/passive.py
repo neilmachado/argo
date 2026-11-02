@@ -110,13 +110,21 @@ def lookup(script, target):
         name = domain(target)
         resolver = dns.resolver.Resolver()
         records = {}
-        for kind in ('A','AAAA','MX','NS','TXT','CNAME','SOA'):
+        for kind in ('A','AAAA','MX','NS','TXT','CNAME','SOA','CAA'):
             try:
                 records[kind] = [r.to_text() for r in resolver.resolve(name,kind,lifetime=3,search=False)]
             except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
                 records[kind] = []
             except Exception:
                 records[kind] = ['Lookup failed or timed out']
+        # Reuse the TXT response for SPF; only DMARC needs one additional name.
+        records['SPF'] = [v for v in records['TXT'] if 'v=spf1' in v.lower()]
+        try:
+            records['DMARC'] = [r.to_text() for r in resolver.resolve('_dmarc.'+name,'TXT',lifetime=3,search=False)]
+        except (dns.resolver.NoAnswer,dns.resolver.NXDOMAIN):
+            records['DMARC'] = []
+        except Exception:
+            records['DMARC'] = ['Lookup failed or timed out']
         return records
     if script == 'censys.py':
         ip = str(ipaddress.ip_address(target))

@@ -30,9 +30,9 @@ def test_missing_key_blocks_request():
 
 def test_otx_menu_and_input_guidance():
     module=next(m for m in modules() if m['script']=='alienvault_otx.py')
-    assert module['id']=='31' and module['api_key']=='OTX_API_KEY'
+    assert module['id']=='22' and module['api_key']=='OTX_API_KEY'
     assert validate_input(module,'A'*64)=='a'*64
-    answers=iter(['2','31','q']);output=StringIO()
+    answers=iter(['2','22','q']);output=StringIO()
     Menu(Console(file=output,width=100),lambda _:next(answers)).run()
     text=output.getvalue()
     assert 'AlienVault OTX' in text and 'MD5/SHA-1/SHA-256' in text

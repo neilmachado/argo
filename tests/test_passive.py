@@ -74,4 +74,4 @@ def test_provider_lookups_never_resolve_or_connect_to_target(monkeypatch):
 def test_dns_fixed_types_and_no_axfr():
     with patch.object(passive.dns.resolver.Resolver,'resolve',return_value=[]) as query:
         passive.lookup('dns_records.py','example.com')
-        assert [call.args[1] for call in query.call_args_list]==['A','AAAA','MX','NS','TXT','CNAME','SOA']
+        assert [call.args[1] for call in query.call_args_list]==['A','AAAA','MX','NS','TXT','CNAME','SOA','CAA','TXT']

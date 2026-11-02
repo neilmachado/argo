@@ -10,13 +10,13 @@ HTML='''<!doctype html><html><head><meta name="generator" content="ExampleCMS"><
 PAGE={'status':200,'headers':{'Server':'ExampleServer','Content-Type':'text/html','X-Frame-Options':'DENY','Set-Cookie':'sid=PRIVATE; Secure; HttpOnly; SameSite=Lax'},'body':HTML}
 
 @pytest.mark.parametrize('script,key,expected',[
- ('http_headers.py','headers','ExampleServer'),('cookies.py','cookies','sid'),
- ('http_security.py','headers','DENY'),('clickjacking_test.py','headers','DENY'),
+ ('http_security.py','headers','ExampleServer'),('cookies.py','cookies','sid'),
+ ('http_security.py','headers','DENY'),('http_security.py','headers','DENY'),
  ('html_comments_extractor.py','comments','audit comment'),('form_grabber.py','forms','email'),
- ('autocomplete_vulnerability_checker.py','forms','off'),('captcha_presence_checker.py','indicators','hcaptcha'),
+ ('form_grabber.py','forms','off'),('captcha_presence_checker.py','indicators','hcaptcha'),
  ('social_media.py','links','linkedin.com'),('embedded_object_hunter.py','embeds','video.example.net'),
  ('pixel_tracker_finder.py','possible_pixels','pixel.gif'),('technology_stack.py','generators','ExampleCMS'),
- ('third_party_integrations.py','referenced_hosts','cdn.example.net')])
+ ('technology_stack.py','referenced_hosts','cdn.example.net')])
 def test_positive_static_html_findings(script,key,expected):
     result=inspect_page(script,PAGE)
     assert expected in str(result[key])
@@ -68,7 +68,7 @@ def test_every_module_dispatches_with_controlled_responses(m):
     assert result is not None
 
 
-@pytest.mark.parametrize('script,key', [('social_media.py','links'),('third_party_integrations.py','referenced_hosts')])
+@pytest.mark.parametrize('script,key', [('social_media.py','links'),('technology_stack.py','referenced_hosts')])
 def test_malformed_link_does_not_crash_page_analysis(script,key):
     page=dict(PAGE,body=HTML+'<a href="http://[invalid">bad</a><script src="http://[invalid"></script>')
     assert inspect_page(script,page)[key]

@@ -11,9 +11,9 @@ import requests
 from bs4 import BeautifulSoup, Comment
 from rich.console import Console
 
-DNS = {'txt_records.py','dns_caa_checker.py','spf_dkim_dmarc_validator.py','dns_over_https.py'}
-RECORDS = {'archive_history.py','ip_info.py','asn_lookup.py','server_info.py'}
-WEB = {'http_headers.py','cookies.py','http_security.py','clickjacking_test.py','security_txt.py','crawl_rules.py','sitemap.py','html_comments_extractor.py','form_grabber.py','captcha_presence_checker.py','autocomplete_vulnerability_checker.py','social_media.py','embedded_object_hunter.py','pixel_tracker_finder.py','technology_stack.py','third_party_integrations.py'}
+DNS = {'dns_over_https.py'}
+RECORDS = {'archive_history.py','ip_info.py'}
+WEB = {'pixel_tracker_finder.py', 'technology_stack.py', 'sitemap.py', 'form_grabber.py', 'crawl_rules.py', 'cookies.py', 'http_security.py', 'social_media.py', 'embedded_object_hunter.py', 'security_txt.py', 'html_comments_extractor.py', 'captcha_presence_checker.py'}
 OFFLINE = {'jwt_token_analyzer.py'}
 RESTORED = frozenset(DNS | RECORDS | WEB | OFFLINE)
 console = Console()
@@ -90,11 +90,11 @@ def inspect_page(script, page):
     body=page['body']; soup=BeautifulSoup(body,'html.parser')
     result={'status':page['status']}
     if page.get('note'):result['note']=page['note']
-    if script=='http_headers.py': result['headers']=headers
-    elif script in {'http_security.py','clickjacking_test.py'}:
-        names=SECURITY_HEADERS if script=='http_security.py' else ('X-Frame-Options','Content-Security-Policy')
-        result['headers']={k:lower.get(k.lower(),'Not present') for k in names}
-        result['note']='Header observations only; absence does not prove a vulnerability.'
+    if script == 'http_security.py':
+        result['headers'] = headers
+        result['security_headers'] = {k:lower.get(k.lower(),'Not present') for k in SECURITY_HEADERS}
+        result['framing'] = {k:lower.get(k.lower(),'Not present') for k in ('X-Frame-Options','Content-Security-Policy')}
+        result['note'] = 'Raw headers, security headers and framing policy from one response. Observations do not prove a vulnerability.'
     elif script=='cookies.py':
         jar=SimpleCookie()
         try:jar.load(lower.get('set-cookie',''))
@@ -112,15 +112,17 @@ def inspect_page(script, page):
             return {'status':status,'outcome':'not_analyzed','note':'The response was not a valid XML sitemap.'}
         result['note']='Listed locations are not fetched; child sitemaps are not followed.'
     elif script=='html_comments_extractor.py':result['comments']=[str(n) for n in soup.find_all(string=lambda x:isinstance(x,Comment))][:100]
-    elif script in {'form_grabber.py','autocomplete_vulnerability_checker.py'}:
+    elif script == 'form_grabber.py':
         result['forms']=[{'action':f.get('action',''),'method':f.get('method','GET'), 'autocomplete':f.get('autocomplete',''), 'fields':[{'name':i.get('name',''),'type':i.get('type','text'),'autocomplete':i.get('autocomplete','')} for i in f.find_all(['input','textarea','select'])][:100]} for f in soup.find_all('form')][:50]
         result['note']='Markup only; no forms submitted and no field values collected.'
     elif script=='captcha_presence_checker.py':result['indicators']=[x for x in ('recaptcha','hcaptcha','turnstile') if x in body.lower()]
     elif script=='social_media.py':result['links']=[a['href'] for a in soup.find_all('a',href=True) if reference_host(a['href']).removeprefix('www.') in {'facebook.com','instagram.com','linkedin.com','x.com','twitter.com','youtube.com','tiktok.com'}][:100]
     elif script=='embedded_object_hunter.py':result['embeds']=[{'tag':n.name,'source':n.get('src',n.get('data',''))} for n in soup.find_all(['iframe','object','embed'])][:100]
     elif script=='pixel_tracker_finder.py':result['possible_pixels']=[{'src':n.get('src',''),'width':n.get('width',''),'height':n.get('height','')} for n in soup.find_all('img') if n.get('width')=='1' or n.get('height')=='1'][:100]
-    elif script=='technology_stack.py':result.update(server=lower.get('server',''),powered_by=lower.get('x-powered-by',''),generators=[m.get('content','') for m in soup.find_all('meta',attrs={'name':'generator'})])
-    elif script=='third_party_integrations.py':result['referenced_hosts']=sorted({reference_host(n.get('src',n.get('href',''))) for n in soup.find_all(['script','link','iframe']) if reference_host(n.get('src',n.get('href','')))})[:100];result['note']='Referenced hosts only; no linked resources are fetched. Not every reference is third party.'
+    elif script == 'technology_stack.py':
+        result.update(server=lower.get('server',''),powered_by=lower.get('x-powered-by',''),generators=[m.get('content','') for m in soup.find_all('meta',attrs={'name':'generator'})])
+        result['referenced_hosts'] = sorted({reference_host(n.get('src',n.get('href',''))) for n in soup.find_all(['script','link','iframe']) if reference_host(n.get('src',n.get('href','')))})[:100]
+        result['note'] = 'Technology hints and referenced integration hosts from one response; referenced hosts are not all necessarily third parties.'
     if script == 'social_media.py':
         result['note'] = 'Only social links present in this fetched HTML are listed. No search engines, linked pages or JavaScript were used.'
     return result
@@ -131,15 +133,12 @@ def lookup(script,target):
     if script in WEB:return inspect_page(script,fetch_page(target,PATHS.get(script,'/')))
     if script in DNS:
         name=domain(target)
-        if script=='txt_records.py':return {'TXT':dns_values(name,'TXT')}
-        if script=='dns_caa_checker.py':return {'CAA':dns_values(name,'CAA')}
-        if script=='spf_dkim_dmarc_validator.py':return {'SPF':[v for v in dns_values(name,'TXT') if 'v=spf1' in v.lower()], 'DMARC':dns_values('_dmarc.'+name,'TXT'), 'note':'Record inspection only. DKIM selectors are not guessed; SPF includes are not expanded.'}
         return get_json('https://dns.google/resolve',params={'name':name,'type':'A'})
     if script=='archive_history.py':return get_json('https://web.archive.org/cdx/search/cdx',params={'url':domain(target)+'/*','output':'json','limit':50,'collapse':'urlkey'})
-    if script in {'ip_info.py','server_info.py','asn_lookup.py'}:
+    if script == 'ip_info.py':
         ip=str(ipaddress.ip_address(target))
         result=get_json('https://ipwho.is/'+quote(ip,safe=''))
-        return result if script!='asn_lookup.py' else {'ip':ip,'connection':result.get('connection',{}),'success':result.get('success')}
+        return result
     if script=='jwt_token_analyzer.py':
         if len(target)>65536:raise ValueError('Token too large')
         parts=target.split('.')

@@ -13,3 +13,7 @@ The current interface has only four numbered options. Module IDs have been repla
 ## Current release: 2.4.0
 
 31 modules are now available. AlienVault OTX was added as module 31 for existing IP, domain and hash intelligence; the original 117 excluded module files remain excluded. The home screen has four options, while selection and run sections show only contextual prompts. Inputs may be entered directly at the run prompt.
+
+## Current release: 2.5.0
+
+Nine overlapping entrypoints were removed by consolidation, leaving 22 modules (01–22). These are mergers, not removal of capabilities: TXT/CAA/SPF/DMARC, ASN/server IP details, framing headers, autocomplete and integration references are available in their merged results. APIs and local sources are displayed on selection and run.

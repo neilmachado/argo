@@ -12,7 +12,7 @@ def menu(answers):
 def item(script):return next(m for m in modules() if m['script']==script)
 
 def test_ids_are_sequential_and_inputs_are_documented():
-    assert [int(m['id']) for m in modules()]==list(range(1,32))
+    assert [int(m['id']) for m in modules()]==list(range(1,23))
     assert all(m['input_type'] and m['example'] for m in modules())
 
 def test_menu_has_exactly_four_choices_and_exits():
@@ -21,7 +21,7 @@ def test_menu_has_exactly_four_choices_and_exits():
     assert 'Goodbye' in text and 'set target' not in text
 
 def test_select_shows_input_example_and_does_not_run():
-    m=item('spf_dkim_dmarc_validator.py');cli,out=menu([m['id']])
+    m=item('dns_records.py');cli,out=menu([m['id']])
     with patch('argus.cli.main.restored_lookup',side_effect=AssertionError('No execution')):
         cli.select_module()
     assert 'Domain name' in out.getvalue() and 'example.com' in out.getvalue()
@@ -29,7 +29,7 @@ def test_select_shows_input_example_and_does_not_run():
 @pytest.mark.parametrize('script,value',[
  ('dns_records.py','8.8.8.8'),('dns_records.py','person@example.com'),
  ('dns_records.py','https://example.com'),('censys.py','example.com'),
- ('http_headers.py','https://example.com/admin'),('jwt_token_analyzer.py','not-a-token')])
+ ('http_security.py','https://example.com/admin'),('jwt_token_analyzer.py','not-a-token')])
 def test_invalid_input_does_not_run(script,value):
     cli,out=menu([value]);cli.selected=item(script)
     with patch('argus.cli.main.API_KEYS',{'CENSYS_PAT':'dummy'}),patch('argus.cli.main.record_lookup',side_effect=AssertionError('No network')),patch('argus.cli.main.restored_lookup',side_effect=AssertionError('No network')):
@@ -45,10 +45,10 @@ def test_missing_key_blocks_run_without_requesting_input():
     assert 'Missing CENSYS_PAT' in out.getvalue()
 
 def test_website_scheme_preserved_and_one_dispatch():
-    cli,out=menu(['http://example.com']);cli.selected=item('http_headers.py')
+    cli,out=menu(['http://example.com']);cli.selected=item('http_security.py')
     with patch('argus.cli.main.restored_lookup',return_value={'status':200}) as run:
         cli.run_module()
-    run.assert_called_once_with('http_headers.py','http://example.com')
+    run.assert_called_once_with('http_security.py','http://example.com')
     assert 'Results were displayed only' in out.getvalue()
 
 def test_blank_cancels_and_old_numbers_are_rejected():
@@ -69,7 +69,7 @@ def test_full_guided_flow_with_mocked_dns():
     assert '192.0.2.1' in out.getvalue()
 
 def test_provider_error_does_not_leak_credentials():
-    cli,out=menu(['example.com']);cli.selected=item('http_headers.py')
+    cli,out=menu(['example.com']);cli.selected=item('http_security.py')
     with patch('argus.cli.main.restored_lookup',side_effect=RuntimeError('SECRET TOKEN')):
         cli.run_module()
     assert 'SECRET TOKEN' not in out.getvalue() and 'Lookup failed' in out.getvalue()

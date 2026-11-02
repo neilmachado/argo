@@ -82,14 +82,16 @@ class Menu:
         table.add_column("No.", justify="right", no_wrap=True)
         table.add_column("Module")
         table.add_column("Required input")
+        table.add_column("API / source")
         for m in self.items:
-            table.add_row(f'{int(m["id"]):02}', m["name"], INPUT_LABELS[m["input_type"]])
+            table.add_row(f'{int(m["id"]):02}', m["name"], INPUT_LABELS[m["input_type"]], m["source"])
         self.console.print(table)
 
     def details(self):
         m = self.selected
         text = Text(f'{int(m["id"]):02}. {m["name"]}\n\n', style="bold cyan")
         text.append(m["description"] + "\n\n", style="white")
+        text.append(m["source"] + "\n" + m["source_details"] + "\n\n", style="white")
         text.append("Required input: " + INPUT_LABELS[m["input_type"]] + "\n", style="bold white")
         text.append("Example: " + m["example"] + "\n", style="green")
         credential = m.get("api_key")
@@ -130,6 +132,8 @@ class Menu:
         if credential and not API_KEYS.get(credential):
             self.console.print("Missing " + credential + ". Configure it in your local environment and restart the tool.", markup=False)
             return
+        self.console.print(m["source"], markup=False)
+        self.console.print(m["source_details"], markup=False)
         self.console.print("Required input: " + INPUT_LABELS[m["input_type"]], markup=False)
         self.console.print("Example: " + m["example"], markup=False)
         if value is None:
@@ -217,5 +221,5 @@ class Menu:
 
 def main():
     menu = Menu()
-    logo("2.4.1", len(menu.items), "neil")
+    logo("2.5", len(menu.items), "neil")
     menu.run()
