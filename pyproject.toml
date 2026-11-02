@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=70", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "arugus-by-neil"
+version = "2.2.0"
+description = "Bounded DNS, public-record and single-page inspection CLI."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Jasonxtn", email = "xtnjason@gmail.com" }]
+maintainers = [{ name = "Neil Machado" }]
+requires-python = ">=3.10"
+keywords = ["recon", "security", "osint", "networking", "dns", "http", "cli"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Topic :: Security",
+  "Intended Audience :: Information Technology",
+  "Typing :: Typed"
+]
+
+dependencies = [
+  "requests>=2.32,<3",
+  "beautifulsoup4>=4.12,<5",
+  "cmd2>=2.4,<3",
+  "rich>=13,<14",
+  "dnspython>=2.6,<3",
+  "colorama>=0.4.6,<1",
+  "python-slugify>=8,<9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "mypy>=1.11",
+  "build>=1.2",
+  "twine>=5",
+]
+
+[project.urls]
+Repository = "https://github.com/neilmachado/Argus-By-neil"
+Issues = "https://github.com/neilmachado/Argus-By-neil/issues"
+
+[project.scripts]
+argus = "argus.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["argus", "argus.*"]
+
+[tool.setuptools.package-data]
+argus = [
+  "config/*.json",
+  "templates/**/*.j2",
+  "data/**/*",
+  "py.typed",
+]

@@ -1,0 +1,7 @@
+requests>=2.32,<3
+cmd2>=2.4,<3
+rich>=13,<14
+dnspython>=2.6,<3
+colorama>=0.4.6,<1
+python-slugify>=8,<9
+beautifulsoup4>=4.12,<5

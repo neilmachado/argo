@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="240" viewBox="0 0 1000 240" role="img" aria-label="Arugus by Neil: lookups and website inspection">
+<rect width="1000" height="240" rx="18" fill="#0b1220"/>
+<path d="M50 119 Q130 25 210 119 Q130 213 50 119Z" fill="none" stroke="#2ec4b6" stroke-width="4"/>
+<circle cx="130" cy="119" r="34" fill="none" stroke="#2ec4b6" stroke-width="3"/>
+<circle cx="130" cy="119" r="12" fill="#2ec4b6"/>
+<text x="255" y="105" fill="#f3f6fc" font-size="42" font-family="Arial,sans-serif" font-weight="700">ARUGUS BY NEIL</text>
+<text x="257" y="145" fill="#b2bfce" font-size="20" font-family="Arial,sans-serif">Public records. DNS. Bounded website inspection.</text>
+<text x="257" y="184" fill="#2ec4b6" font-size="15" font-family="Arial,sans-serif" letter-spacing="2">30 MODULES  /  TERMINAL OUTPUT  /  PYTHON 3.10+</text>
+</svg>
