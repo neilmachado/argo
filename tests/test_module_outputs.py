@@ -2,9 +2,9 @@ from unittest.mock import patch
 from io import StringIO
 import pytest
 from rich.console import Console
-from threathawk.nonintrusive import inspect_page,WEB,lookup
-from threathawk.cli.main import modules,Menu
-from threathawk import passive
+from argo.nonintrusive import inspect_page,WEB,lookup
+from argo.cli.main import modules,Menu
+from argo import passive
 
 HTML='''<!doctype html><html><head><meta name="generator" content="ExampleCMS"><script src="https://cdn.example.net/app.js"></script></head><body><!--audit comment--><a href="https://www.linkedin.com/company/example">Social</a><form method="POST" action="/submit"><input type="email" name="email" autocomplete="off" value="PRIVATE"></form><div class="h-captcha">hcaptcha</div><iframe src="https://video.example.net/embed"></iframe><img src="/pixel.gif" width="1" height="1"></body></html>'''
 PAGE={'status':200,'headers':{'Server':'ExampleServer','Content-Type':'text/html','X-Frame-Options':'DENY','Set-Cookie':'sid=PRIVATE; Secure; HttpOnly; SameSite=Lax'},'body':HTML}
@@ -49,7 +49,7 @@ def test_standard_metadata_returns_content(script):
 def test_menu_does_not_say_finished_for_redirect():
     output=StringIO();cli=Menu(Console(file=output,width=100),lambda _: '')
     cli.selected=next(m for m in modules() if m['script']=='social_media.py')
-    with patch('threathawk.cli.main.restored_lookup',return_value={'status':301,'outcome':'not_analyzed','note':'Redirect'}):
+    with patch('argo.cli.main.restored_lookup',return_value={'status':301,'outcome':'not_analyzed','note':'Redirect'}):
         cli.run_module('example.com')
     assert 'Not analyzed.' in output.getvalue() and 'Finished.' not in output.getvalue()
 
@@ -63,8 +63,8 @@ def test_every_module_dispatches_with_controlled_responses(m):
     class Answer:
         def to_text(self):return '"v=spf1 -all"'
     page=PAGE if m['script'] not in ('sitemap.py',) else {'status':200,'headers':{},'body':'<urlset><url><loc>https://example.com/</loc></url></urlset>'}
-    with patch('threathawk.nonintrusive.fetch_page',return_value=page),patch.object(passive,'get_json',side_effect=provider),patch.object(passive,'API_KEYS',{'CENSYS_PAT':'dummy','SHODAN_API_KEY':'dummy','VIRUSTOTAL_API_KEY':'dummy','OTX_API_KEY':'dummy'}),patch('dns.resolver.Resolver.resolve',return_value=[Answer()]):
-        result=lookup(m['script'],target) if m['script'] in __import__('threathawk.nonintrusive',fromlist=['RESTORED']).RESTORED else passive.lookup(m['script'],target)
+    with patch('argo.nonintrusive.fetch_page',return_value=page),patch.object(passive,'get_json',side_effect=provider),patch.object(passive,'API_KEYS',{'CENSYS_PAT':'dummy','SHODAN_API_KEY':'dummy','VIRUSTOTAL_API_KEY':'dummy','OTX_API_KEY':'dummy'}),patch('dns.resolver.Resolver.resolve',return_value=[Answer()]):
+        result=lookup(m['script'],target) if m['script'] in __import__('argo.nonintrusive',fromlist=['RESTORED']).RESTORED else passive.lookup(m['script'],target)
     assert result is not None
 
 
@@ -75,5 +75,5 @@ def test_malformed_link_does_not_crash_page_analysis(script,key):
 
 @pytest.mark.parametrize('origin',['https://example.com:80','http://example.com:443'])
 def test_nondefault_scheme_ports_are_not_silently_rewritten(origin):
-    from threathawk.nonintrusive import website_url
+    from argo.nonintrusive import website_url
     with pytest.raises(ValueError):website_url(origin)

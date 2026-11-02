@@ -1,9 +1,14 @@
+# Argo branding update
+
+- Rename the distribution, Python package, terminal branding and primary command to Argo.
+- Update repository URLs to neilmachado/argo; retain original license and attribution.
+
 # Changelog
 
 ## Public branding update
 
 - Remove the portrait image and derived portrait data from the public distribution.
-- Use a text-only ThreatHawk startup banner and README.
+- Use a text-only Argo startup banner and README.
 - Preserve the local installed portrait, module behavior, disclaimer and upstream license.
 
 ## 2.6.1 (local changes)
@@ -16,7 +21,7 @@
 
 ## 2.6.0
 
-- Rename the product, Python package and primary command to ThreatHawk.
+- Rename the product, Python package and primary command to Argo.
 - Replace the eye artwork with Neil’s supplied image, included unchanged, and its precomputed terminal rendering.
 - Use orange brand accents and retain the disclaimer and upstream MIT attribution.
 - Keep argus as a compatibility command. Module behavior and data-source limits are unchanged.

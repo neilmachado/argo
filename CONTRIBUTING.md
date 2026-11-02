@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping improve ThreatHawk.
+Thank you for helping improve Argo.
 
 ## Development
 

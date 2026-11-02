@@ -6,9 +6,9 @@ The five merged checks (DNS/email, IP/ASN, HTTP security/headers, forms/autocomp
 
 The prior 31-module live audit is retained in VALIDATION-2.4.1.md as historical evidence. That audit is not a statement that every arbitrary target or provider account will work. Redirects, denials, missing metadata and timeouts remain explicit outcomes; no bypasses or intrusive scans were added.
 
-## ThreatHawk 2.6.0 branding validation
+## Argo 2.6.0 branding validation
 
-205 checks pass against the installed ThreatHawk package, including packaged logo data, color and no-color terminal rendering, the retained disclaimer, and existing module behavior. The supplied PNG is preserved byte-for-byte in assets/neil-logo.png. The Python package and primary command are now threathawk; argus remains a compatibility command.
+205 checks pass against the installed Argo package, including packaged logo data, color and no-color terminal rendering, the retained disclaimer, and existing module behavior. The supplied PNG is preserved byte-for-byte in assets/neil-logo.png. The Python package and primary command are now argo; argus remains a compatibility command.
 
 ## Public logo removal
 

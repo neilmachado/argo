@@ -1,4 +1,4 @@
-# ThreatHawk: varied-input verification
+# Argo: varied-input verification
 
 Date: November 1, 2026. Local version: 2.6.1. GitHub was not modified.
 

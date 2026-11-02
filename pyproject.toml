@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "threathawk"
+name = "argo"
 version = "2.6.1"
 description = "Bounded DNS, public-record and single-page inspection CLI."
 readme = "README.md"
@@ -45,19 +45,19 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/neilmachado/ThreatHawk"
-Issues = "https://github.com/neilmachado/ThreatHawk/issues"
+Repository = "https://github.com/neilmachado/argo"
+Issues = "https://github.com/neilmachado/argo/issues"
 
 [project.scripts]
-threathawk = "threathawk.cli.main:main"
-argus = "threathawk.cli.main:main"
+argo = "argo.cli.main:main"
+argus = "argo.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["threathawk", "threathawk.*"]
+include = ["argo", "argo.*"]
 
 [tool.setuptools.package-data]
-threathawk = [
+argo = [
   "config/*.json",
   "templates/**/*.j2",
   "data/**/*",

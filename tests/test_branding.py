@@ -2,14 +2,14 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 from rich.console import Console
-from threathawk.cli import logo
+from argo.cli import logo
 
 
 def test_text_branding_and_disclaimer():
     stream=StringIO();console=Console(file=stream,color_system=None,width=100)
     with patch.object(logo,'console',console):logo.logo('2.6.1',22,'neil')
     text=stream.getvalue()
-    assert 'THREATHAWK' in text and 'LEGAL DISCLAIMER' in text and 'Coded by: neil' in text
+    assert 'ARGO' in text and 'LEGAL DISCLAIMER' in text and 'Coded by: neil' in text
     assert 'TERMINAL ONLY' not in text
 
 

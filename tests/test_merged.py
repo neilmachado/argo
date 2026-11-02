@@ -3,13 +3,13 @@ from io import StringIO
 from unittest.mock import patch
 import pytest
 from rich.console import Console
-from threathawk import passive
-from threathawk.cli.main import modules,Menu
-from threathawk.nonintrusive import lookup
+from argo import passive
+from argo.cli.main import modules,Menu
+from argo.nonintrusive import lookup
 
 @pytest.mark.parametrize('name',['server_info','asn_lookup','txt_records','dns_caa_checker','spf_dkim_dmarc_validator','http_headers','clickjacking_test','autocomplete_vulnerability_checker','third_party_integrations'])
 def test_merged_entrypoints_removed(name):
-    assert importlib.util.find_spec('threathawk.modules.'+name) is None
+    assert importlib.util.find_spec('argo.modules.'+name) is None
 
 
 def test_ip_asn_is_one_provider_call_with_full_information():
@@ -39,7 +39,7 @@ def test_merged_dns_reuses_txt_and_has_caa_spf_dmarc():
 def test_sources_displayed_at_selection_and_execution_without_key_values():
     m=next(m for m in modules() if m['script']=='censys.py')
     out=StringIO();cli=Menu(Console(file=out,width=120),lambda _:m['id'])
-    with patch('threathawk.cli.main.API_KEYS',{'CENSYS_PAT':'DO_NOT_PRINT'}),patch('threathawk.cli.main.record_lookup',return_value={}):
+    with patch('argo.cli.main.API_KEYS',{'CENSYS_PAT':'DO_NOT_PRINT'}),patch('argo.cli.main.record_lookup',return_value={}):
         cli.select_module();cli.run_module('8.8.8.8')
     text=out.getvalue()
     assert text.count('API: Censys Platform API')==2
@@ -55,7 +55,7 @@ def test_every_retained_module_identifies_its_source():
 
 
 def test_merged_http_uses_one_response_for_all_header_views():
-    with patch('threathawk.nonintrusive.fetch_page',return_value={'status':200,'headers':{'Server':'Test','X-Frame-Options':'DENY'},'body':''}) as get:
+    with patch('argo.nonintrusive.fetch_page',return_value={'status':200,'headers':{'Server':'Test','X-Frame-Options':'DENY'},'body':''}) as get:
         result=lookup('http_security.py','example.com')
     get.assert_called_once()
     assert result['headers']['Server']=='Test'
@@ -64,7 +64,7 @@ def test_merged_http_uses_one_response_for_all_header_views():
 
 
 def test_merged_technology_uses_one_response_for_all_findings():
-    with patch('threathawk.nonintrusive.fetch_page',return_value={'status':200,'headers':{'Server':'Test'},'body':'<meta name="generator" content="ExampleCMS"><script src="https://cdn.example.net/app.js"></script>'}) as get:
+    with patch('argo.nonintrusive.fetch_page',return_value={'status':200,'headers':{'Server':'Test'},'body':'<meta name="generator" content="ExampleCMS"><script src="https://cdn.example.net/app.js"></script>'}) as get:
         result=lookup('technology_stack.py','example.com')
     get.assert_called_once()
     assert result['server']=='Test' and result['generators']==['ExampleCMS']

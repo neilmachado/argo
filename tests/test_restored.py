@@ -1,7 +1,7 @@
 from unittest.mock import patch
 import base64,json
 import pytest
-from threathawk import nonintrusive as n
+from argo import nonintrusive as n
 
 @pytest.mark.parametrize('target',['https://example.com/admin','https://example.com/?debug=1','https://user:pass@example.com','https://example.com:8443','file:///etc/passwd','127.0.0.1'])
 def test_web_rejects_non_origin_inputs(target):
@@ -46,12 +46,12 @@ def test_redirect_is_reported_not_followed():
     assert len(Session.urls)==1 and page['body']=='' and page['status']==302
 
 def test_web_body_size_capped():
-    from threathawk import passive
+    from argo import passive
     with patch.object(n.requests,'Session',Session),patch.object(passive,'MAX_BYTES',1):
         with pytest.raises(ValueError,match='size limit'):n.fetch_page('example.com')
 
 def test_dns_no_bruteforce_or_selector_guessing():
-    from threathawk import passive
+    from argo import passive
     with patch('dns.resolver.Resolver.resolve',return_value=[]) as query:
         passive.lookup('dns_records.py','example.com')
     assert len(query.call_args_list)==9

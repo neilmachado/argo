@@ -1,4 +1,4 @@
-# ThreatHawk
+# Argo
 
 > A separate [ThreatHawk Standalone edition](https://github.com/neilmachado/ThreatHawk-Standalone) is now available. This repository remains the earlier Argus-derived edition and retains its original license and attribution.
 
@@ -50,8 +50,8 @@ The exact source and endpoint template appear at selection and immediately befor
 Use Python 3.10 or newer:
 
 ```sh
-git clone https://github.com/neilmachado/ThreatHawk.git
-cd ThreatHawk
+git clone https://github.com/neilmachado/argo.git
+cd argo
 python3 -m venv .venv
 source .venv/bin/activate
 pip install .
@@ -60,7 +60,7 @@ cp .env.example .env
 set -a
 source .env
 set +a
-python -m threathawk
+python -m argo
 ```
 
 The program does not auto-load `.env`; source it as above. DNS and ordinary website checks work without provider keys. Do not paste real credentials into chat, issues or source files.
@@ -103,7 +103,7 @@ See [current verification](docs/VALIDATION.md) and the [historical 2.4.1 module 
 
 ## Branding
 
-The public distribution uses text-only ThreatHawk branding. It contains no portrait logo or derived portrait artwork. The command is `threathawk` (or `python -m threathawk`); `argus` remains a compatibility command.
+The public distribution uses text-only Argo branding. It contains no portrait logo or derived portrait artwork. The command is `argo` (or `python -m argo`); `argus` remains a compatibility command.
 
 ## Attribution
 
