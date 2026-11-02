@@ -1,5 +1,7 @@
 # ThreatHawk
 
+> A separate [ThreatHawk Standalone edition](https://github.com/neilmachado/ThreatHawk-Standalone) is now available. This repository remains the earlier Argus-derived edition and retains its original license and attribution.
+
 A terminal toolkit for DNS, public-record lookups, offline JWT inspection, and bounded website checks. Related checks are combined into **22 modules**, with the API or data source displayed before every run.
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
