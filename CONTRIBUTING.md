@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping improve Arugus by Neil.
+Thank you for helping improve ThreatHawk.
 
 ## Development
 

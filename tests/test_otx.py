@@ -2,8 +2,8 @@ from unittest.mock import patch
 from io import StringIO
 from rich.console import Console
 import pytest
-from argus import passive
-from argus.cli.main import Menu,modules,validate_input
+from threathawk import passive
+from threathawk.cli.main import Menu,modules,validate_input
 
 @pytest.mark.parametrize('value,kind,normalized',[
  ('8.8.8.8','IPv4','8.8.8.8'),('2001:4860:4860::8888','IPv6','2001:4860:4860::8888'),

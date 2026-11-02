@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "arugus-by-neil"
-version = "2.5.0"
+name = "threathawk"
+version = "2.6.0"
 description = "Bounded DNS, public-record and single-page inspection CLI."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -45,20 +45,22 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/neilmachado/Argus-By-neil"
-Issues = "https://github.com/neilmachado/Argus-By-neil/issues"
+Repository = "https://github.com/neilmachado/ThreatHawk"
+Issues = "https://github.com/neilmachado/ThreatHawk/issues"
 
 [project.scripts]
-argus = "argus.cli.main:main"
+threathawk = "threathawk.cli.main:main"
+argus = "threathawk.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["argus", "argus.*"]
+include = ["threathawk", "threathawk.*"]
 
 [tool.setuptools.package-data]
-argus = [
+threathawk = [
   "config/*.json",
   "templates/**/*.j2",
   "data/**/*",
+  "data/*.json",
   "py.typed",
 ]

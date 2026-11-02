@@ -3,19 +3,19 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 import pytest
-from argus import passive
-from argus.core import runner
-from argus.cli.catalog.loader import load
+from threathawk import passive
+from threathawk.core import runner
+from threathawk.cli.catalog.loader import load
 
 @pytest.mark.parametrize('module',['open_ports','exposed_api_endpoints','rate_limit_waf_bypass_test','zonetransfer','performance_monitoring','snmp_public_community_checker','hidden_parameter_discovery'])
 def test_removed_modules_unavailable(module):
-    assert importlib.util.find_spec('argus.modules.'+module) is None
+    assert importlib.util.find_spec('threathawk.modules.'+module) is None
 
 def test_catalog_and_physical_modules_exactly_match():
     catalog=load()
     assert {m['script'] for entries in catalog.values() for m in entries} == passive.ALLOWED_SCRIPTS
-    import argus.modules
-    assert {p.name for p in Path(argus.modules.__file__).parent.glob('*.py') if p.name!='__init__.py'}==passive.ALLOWED_SCRIPTS
+    import threathawk.modules
+    assert {p.name for p in Path(threathawk.modules.__file__).parent.glob('*.py') if p.name!='__init__.py'}==passive.ALLOWED_SCRIPTS
 
 def test_runner_blocks_paths_and_removed_modules():
     with patch.object(runner.subprocess,'Popen',side_effect=AssertionError('Unexpected execution')):
@@ -24,7 +24,7 @@ def test_runner_blocks_paths_and_removed_modules():
 
 def test_external_catalog_ignored(monkeypatch,tmp_path):
     p=tmp_path/'modules.json';p.write_text('{"network_infrastructure":[{"script":"open_ports.py"}]}')
-    monkeypatch.setenv('ARGUS_CATALOG_PATH',str(p))
+    monkeypatch.setenv('THREATHAWK_CATALOG_PATH',str(p))
     assert all(m['script'] in passive.ALLOWED_SCRIPTS for entries in load().values() for m in entries)
 
 @pytest.mark.parametrize('url',['http://crt.sh/','https://example.com/','https://crt.sh.evil.test/','https://user@crt.sh/','https://crt.sh:8443/'])

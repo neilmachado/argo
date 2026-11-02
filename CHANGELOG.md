@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.0
+
+- Rename the product, Python package and primary command to ThreatHawk.
+- Replace the eye artwork with Neil’s supplied image, included unchanged, and its precomputed terminal rendering.
+- Use orange brand accents and retain the disclaimer and upstream MIT attribution.
+- Keep argus as a compatibility command. Module behavior and data-source limits are unchanged.
+- Verify the installed package and terminal branding with 205 passing checks.
+
 ## 2.5.0
 
 - Consolidate overlapping checks into 22 consecutively numbered modules.

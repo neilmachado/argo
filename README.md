@@ -1,6 +1,6 @@
-![Arugus by Neil](assets/banner.svg)
+<p align="center"><img src="assets/neil-logo.png" width="180" alt="ThreatHawk logo supplied by Neil" /></p>
 
-# Arugus by Neil
+# ThreatHawk
 
 A terminal toolkit for DNS, public-record lookups, offline JWT inspection, and bounded website checks. Related checks are combined into **22 modules**, with the API or data source displayed before every run.
 
@@ -50,8 +50,8 @@ The exact source and endpoint template appear at selection and immediately befor
 Use Python 3.10 or newer:
 
 ```sh
-git clone https://github.com/neilmachado/Argus-By-neil.git
-cd Argus-By-neil
+git clone https://github.com/neilmachado/ThreatHawk.git
+cd ThreatHawk
 python3 -m venv .venv
 source .venv/bin/activate
 pip install .
@@ -60,7 +60,7 @@ cp .env.example .env
 set -a
 source .env
 set +a
-python -m argus
+python -m threathawk
 ```
 
 The program does not auto-load `.env`; source it as above. DNS and ordinary website checks work without provider keys. Do not paste real credentials into chat, issues or source files.
@@ -98,6 +98,10 @@ python -m pytest tests -q
 ```
 
 See [current verification](docs/VALIDATION.md) and the [historical 2.4.1 module audit](docs/VALIDATION-2.4.1.md). Mock-based tests cover every retained module, merged outputs, single-response reuse, displayed sources, input validation, credential isolation and network boundaries. Dependencies have not received a full independent audit.
+
+## Branding
+
+ThreatHawk uses Neil’s supplied portrait as its project logo, with a terminal-compatible rendering at startup. The original bitmap is included unchanged in assets/neil-logo.png. The command is `threathawk` (or `python -m threathawk`); `argus` remains a compatibility command. Existing module capabilities and security boundaries are unchanged.
 
 ## Attribution
 
