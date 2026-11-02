@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arugus-by-neil"
-version = "2.2.0"
+version = "2.4.0"
 description = "Bounded DNS, public-record and single-page inspection CLI."
 readme = "README.md"
 license = { file = "LICENSE" }

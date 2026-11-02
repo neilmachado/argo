@@ -85,4 +85,4 @@ number_of_modules = len(
 )
 
 AUTHOR = "neil"
-VERSION = "2.2"
+VERSION = "2.4"

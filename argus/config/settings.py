@@ -8,6 +8,7 @@ DEFAULT_TIMEOUT = 10
 USER_AGENT = "Mozilla/5.0 (compatible; ArgusRecon/2.0)"
 
 API_KEYS = {
+    "OTX_API_KEY": os.getenv("OTX_API_KEY", ""),
     "CENSYS_PAT": os.getenv("CENSYS_PAT", ""),
     "VIRUSTOTAL_API_KEY": os.getenv("VIRUSTOTAL_API_KEY", ""),
     "SHODAN_API_KEY": os.getenv("SHODAN_API_KEY", ""),

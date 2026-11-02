@@ -5,5 +5,5 @@
 <circle cx="130" cy="119" r="12" fill="#2ec4b6"/>
 <text x="255" y="105" fill="#f3f6fc" font-size="42" font-family="Arial,sans-serif" font-weight="700">ARUGUS BY NEIL</text>
 <text x="257" y="145" fill="#b2bfce" font-size="20" font-family="Arial,sans-serif">Public records. DNS. Bounded website inspection.</text>
-<text x="257" y="184" fill="#2ec4b6" font-size="15" font-family="Arial,sans-serif" letter-spacing="2">30 MODULES  /  TERMINAL OUTPUT  /  PYTHON 3.10+</text>
+<text x="257" y="184" fill="#2ec4b6" font-size="15" font-family="Arial,sans-serif" letter-spacing="2">31 MODULES  /  TERMINAL OUTPUT  /  PYTHON 3.10+</text>
 </svg>

@@ -18,3 +18,7 @@ env/
 !.env.example
 work/
 *.log
+
+.DS_Store
+*.pem
+*.key

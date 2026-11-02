@@ -19,8 +19,8 @@ console = Console()
 PATHS = {'security_txt.py':'/.well-known/security.txt','crawl_rules.py':'/robots.txt','sitemap.py':'/sitemap.xml'}
 SECURITY_HEADERS = ('Strict-Transport-Security','Content-Security-Policy','X-Frame-Options','X-Content-Type-Options','Referrer-Policy','Permissions-Policy')
 
-def fetch_page(target, path='/'):
-    from argus.passive import domain, MAX_BYTES
+def website_url(target, path='/'):
+    from argus.passive import domain
     if path not in {'/','/.well-known/security.txt','/robots.txt','/sitemap.xml'}:
         raise ValueError('Only the homepage and standard metadata paths are allowed')
     parsed = urlsplit(target if '://' in target else 'https://'+target)
@@ -34,7 +34,11 @@ def fetch_page(target, path='/'):
     else:
         if not ip.is_global: raise ValueError('A public hostname/IP is required')
         host = '['+str(ip)+']' if ip.version==6 else str(ip)
-    url = parsed.scheme+'://'+host+path
+    return parsed.scheme+'://'+host+path
+
+def fetch_page(target, path='/'):
+    from argus.passive import MAX_BYTES
+    url = website_url(target, path)
     with requests.Session() as session:
         session.trust_env = False
         with session.get(url, timeout=(5,15), verify=True, allow_redirects=False,stream=True,

@@ -28,4 +28,4 @@ def logo(version: str, modules: int, author: str) -> None:
     content.append(f"Version: {version}   Modules: {modules}   Coded by: {author}\n", style="bright_white")
     content.append("TERMINAL ONLY · No results saved to disk", style="bold green")
     console.print(Panel(content, border_style="cyan", padding=(1, 2)), justify="center")
-    console.print("[cyan]Type 'modules' to explore or 'help' for commands.[/cyan]")
+    console.print("[cyan]Choose 1, 2, 3 or 4 from the menu below.[/cyan]")

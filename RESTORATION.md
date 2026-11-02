@@ -5,3 +5,11 @@
 Important changes: framing, forms, CAPTCHA, comments, pixels and embed checks inspect only the homepage. Sitemap parsing does not follow links. Technology detection does not guess platform files. Social links come only from the page, with no search-engine scraping. SPF/DMARC does not guess DKIM selectors. JWT decoding never downloads keys or validates signatures. IP/ASN lookups use a public HTTPS provider, with no local port probes. No API key values are in the release source.
 
 The original pre-publication review describes the former full toolkit and is historical; it does not describe the current restricted implementations.
+
+## 2.3 interface update
+
+The current interface has only four numbered options. Module IDs have been replaced with sequential 01–30 numbering; older IDs and command-shell examples no longer apply.
+
+## Current release: 2.4.0
+
+31 modules are now available. AlienVault OTX was added as module 31 for existing IP, domain and hash intelligence; the original 117 excluded module files remain excluded. The home screen has four options, while selection and run sections show only contextual prompts. Inputs may be entered directly at the run prompt.
