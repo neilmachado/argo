@@ -81,6 +81,12 @@ Get your own API key from your [OTX account/API page](https://otx.alienvault.com
 
 The module makes one GET to `https://otx.alienvault.com/api/v1/indicators/{type}/{indicator}/general`, sends only the OTX key in the `X-OTX-API-KEY` header, and follows no returned links. Hash types use the API's `file` type. No target system is contacted or scanned, no files or URLs are submitted, and no pulse is created. The lookup indicator is disclosed to OTX. A pulse association is not a conclusive maliciousness verdict, and no match does not establish safety. Authenticated OTX lookup for 8.8.8.8 was verified locally. API keys remain private and are not included in this repository.
 
+## Redirects, denied access and missing metadata
+
+A 301/302 response is a redirect, not a successful content analysis. The tool displays the destination without following it. Enter the canonical origin separately only if you are permitted to check it. HTTP 403 means access was denied, and HTTP 404 means the requested page/file was not found. These responses show `outcome: not_analyzed`; an empty findings list is not fabricated. A 200-page with no static social links does not prove the site has no social accounts or JavaScript-loaded links.
+
+See [the module verification report](docs/VALIDATION.md) for the all-module checks and sample outcomes.
+
 ## Verification
 
 ```sh

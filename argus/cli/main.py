@@ -3,6 +3,7 @@ import base64
 import binascii
 import ipaddress
 import json
+import requests
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -148,7 +149,16 @@ class Menu:
             self.console.print(Text("Running " + m["name"] + "…", style="cyan"))
             result = restored_lookup(script, value) if script in RESTORED else record_lookup(script, value)
             self.console.print_json(data=result)
-            self.console.print("Finished. Results were displayed only in this terminal.", markup=False)
+            if isinstance(result, dict) and result.get("outcome") == "not_analyzed":
+                self.console.print("Not analyzed. See the HTTP status and next-step guidance above.", markup=False)
+            else:
+                self.console.print("Finished. Results were displayed only in this terminal.", markup=False)
+        except requests.exceptions.Timeout:
+            self.console.print("The remote service timed out. No result was obtained; try again later.", markup=False)
+        except requests.exceptions.SSLError:
+            self.console.print("TLS certificate verification failed. The request was stopped; do not disable verification to bypass this.", markup=False)
+        except requests.exceptions.ConnectionError:
+            self.console.print("Could not connect to the remote service. Check your connection or try again later.", markup=False)
         except ProviderError as exc:
             self.console.print(str(exc), markup=False)
         except KeyboardInterrupt:
@@ -207,5 +217,5 @@ class Menu:
 
 def main():
     menu = Menu()
-    logo("2.4", len(menu.items), "neil")
+    logo("2.4.1", len(menu.items), "neil")
     menu.run()

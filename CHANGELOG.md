@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.4.1
+
+- Distinguish redirects, denied requests and missing pages from empty findings.
+- Display redirect destinations and useful next-step guidance without following links.
+- Explain network timeouts, TLS and connection errors clearly.
+- Handle namespaced sitemaps and malformed HTML links; reject scheme/port mismatches.
+- Verify all 31 modules with controlled cases and live smoke checks; 215 automated checks pass.
+- Document live limitations and the reported eBay redirect/403 in docs/VALIDATION.md.
+
 ## 2.4.0
 
 - Add module 31: AlienVault OTX Threat Intelligence for IP, domain and file-hash indicator records.
