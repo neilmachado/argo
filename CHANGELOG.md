@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.1 (local changes)
+
+- Verify every module with varied examples: 81 cases with no code failures.
+- Add explicit same-site HTTPS redirect shortcut r, without automatic following or bypassing denials.
+- Correct sitemap XML-parser warning and improve moved/denied messages.
+- Retain local startup-label removal.
+- Pass 219 automated checks and the live explicit redirect flow. GitHub is unchanged.
+
 ## 2.6.0
 
 - Rename the product, Python package and primary command to ThreatHawk.

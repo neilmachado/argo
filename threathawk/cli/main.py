@@ -4,6 +4,7 @@ import binascii
 import ipaddress
 import json
 import requests
+from urllib.parse import urlsplit
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -12,7 +13,7 @@ from threathawk.cli.catalog.loader import load
 from threathawk.cli.logo import logo
 from threathawk.config.settings import API_KEYS
 from threathawk.passive import ALLOWED_SCRIPTS, ProviderError, domain, otx_indicator, lookup as record_lookup
-from threathawk.nonintrusive import RESTORED, lookup as restored_lookup, website_url
+from threathawk.nonintrusive import RESTORED, WEB, PATHS, lookup as restored_lookup, website_url
 
 INPUT_LABELS = {
     "otx_indicator": "IP address, domain, or MD5/SHA-1/SHA-256 hash",
@@ -63,12 +64,36 @@ def validate_input(module, value):
         return value
     raise ValueError("Unsupported input type.")
 
+def redirect_origin(current, result, script):
+    """Offer one explicit retry only for the same site's HTTPS origin/www alias."""
+    if script not in WEB or not isinstance(result, dict) or not 300 <= result.get('status', 0) < 400:
+        return None
+    try:
+        source = urlsplit(website_url(current))
+        target = urlsplit(result.get('redirect_to', ''))
+        if target.scheme != 'https' or target.query or target.fragment or target.username or target.password:
+            return None
+        if target.port not in (None, 443) or target.path not in ('', '/', PATHS.get(script, '/')):
+            return None
+        source_host = (source.hostname or '').lower()
+        target_host = (target.hostname or '').lower()
+        if source_host.removeprefix('www.') != target_host.removeprefix('www.'):
+            return None
+        destination = 'https://' + target.netloc
+        website_url(destination)
+        if destination.rstrip('/') == (source.scheme + '://' + source.netloc).rstrip('/'):
+            return None
+        return destination
+    except ValueError:
+        return None
+
 class Menu:
     def __init__(self, console=None, read=None):
         self.console = console or Console()
         self.read = read or input
         self.items = modules()
         self.selected = None
+        self.redirect_target = None
 
     def show_menu(self):
         selected = self.selected["name"] if self.selected else "None — choose 2 to select a module"
@@ -120,10 +145,12 @@ class Menu:
             self.console.print(f"That module does not exist. Choose a number between 1 and {len(self.items)}.", markup=False)
             return
         self.selected = match
+        self.redirect_target = None
         self.details()
         return "selected"
 
     def run_module(self, value=None):
+        self.redirect_target = None
         if not self.selected:
             self.console.print("Select a module before running.", markup=False)
             return
@@ -152,9 +179,15 @@ class Menu:
         try:
             self.console.print(Text("Running " + m["name"] + "…", style="cyan"))
             result = restored_lookup(script, value) if script in RESTORED else record_lookup(script, value)
+            self.redirect_target = redirect_origin(value, result, script)
             self.console.print_json(data=result)
             if isinstance(result, dict) and result.get("outcome") == "not_analyzed":
-                self.console.print("Not analyzed. See the HTTP status and next-step guidance above.", markup=False)
+                if self.redirect_target:
+                    self.console.print('Website moved to ' + self.redirect_target + '. Type r below to make one separate request to that same-site destination, if permitted.', markup=False)
+                elif result.get('status') == 403:
+                    self.console.print('Access denied by the website (HTTP 403). No analysis was possible; no bypass will be attempted.', markup=False)
+                else:
+                    self.console.print("Not analyzed. See the HTTP status and next-step guidance above.", markup=False)
             else:
                 self.console.print("Finished. Results were displayed only in this terminal.", markup=False)
         except requests.exceptions.Timeout:
@@ -200,13 +233,17 @@ class Menu:
                     elif action == "selected": section = "ready"
                 else:
                     name = self.selected["name"]
+                    redirect_hint = ("; r to check " + self.redirect_target) if self.redirect_target else ""
                     action = self.read(
                         ("Enter input to run " if section == "ready" else "Enter new input to run again: ")
-                        + name + " (or press Enter for guidance); b for home; q to exit: "
+                        + name + " (or press Enter for guidance)" + redirect_hint + "; b for home; q to exit: "
                     ).strip()
                     if action.lower() == "q": break
                     if action.lower() == "b":
                         section = "home"
+                    elif action.lower() == "r" and self.redirect_target:
+                        self.run_module(value=self.redirect_target)
+                        section = "result"
                     elif action == "":
                         self.run_module()
                         section = "result"
@@ -221,5 +258,5 @@ class Menu:
 
 def main():
     menu = Menu()
-    logo("2.6", len(menu.items), "neil")
+    logo("2.6.1", len(menu.items), "neil")
     menu.run()

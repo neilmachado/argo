@@ -87,7 +87,8 @@ def inspect_page(script, page):
     if not 200 <= status < 300:
         return {'status': status, 'outcome': 'not_analyzed',
                 'note': 'The requested page was not available (HTTP ' + str(status) + '). No page-content findings were produced.'}
-    body=page['body']; soup=BeautifulSoup(body,'html.parser')
+    body = page['body']
+    soup = None if script in {'sitemap.py','security_txt.py','crawl_rules.py'} else BeautifulSoup(body,'html.parser')
     result={'status':page['status']}
     if page.get('note'):result['note']=page['note']
     if script == 'http_security.py':

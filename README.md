@@ -76,19 +76,21 @@ The home screen contains four options:
 4. Exit
 ```
 
-Choose **1** or **2**, then enter a module number. Selection shows the input type, an example, the API/source and credential status. Type the input directly to run, or press Enter for input guidance. After results, type another input to run again, **b** for home or **q** to exit. Home option 3 runs the selected module; without a selection it guides you to choose one. The home menu does not repeat inside each section.
+Choose **1** or **2**, then enter a module number. Selection shows the input type, an example, the API/source and credential status. Type the input directly to run, or press Enter for input guidance. After results, type another input to run again, **b** for home or **q** to exit. When a same-site HTTPS/`www` redirect is reported, **r** explicitly requests that destination once; it is never fetched automatically. Home option 3 runs the selected module; without a selection it guides you to choose one. The home menu does not repeat inside each section.
 
 Example: choose **2**, enter **2** for DNS & Email Records, then type `example.com`. IP modules require IPv4/IPv6; website modules accept a domain or HTTP(S) origin. Domain-only modules reject IPs, paths and email addresses. AlienVault OTX accepts IPs, domains and hexadecimal MD5/SHA-1/SHA-256 hashes, detected automatically. Email addresses, URLs and file uploads are not supported by OTX in this tool.
 
 ## Request boundaries and limitations
 
-Website checks make one GET to the homepage or one standard metadata path. No crawling, form submissions, JavaScript execution, linked-resource fetching, redirects or automatic retries. TLS verification is enabled, response sizes are limited to 2 MB and timeouts are finite. Website checks are low-impact active requests that require permission; GET is not a universal guarantee against side effects. DNS resolvers may retry under their own rules.
+Website checks make one GET to the homepage or one standard metadata path. No crawling, form submissions, JavaScript execution, linked-resource fetching, automatic redirect following or automatic retries. TLS verification is enabled, response sizes are limited to 2 MB and timeouts are finite. Website checks are low-impact active requests that require permission; GET is not a universal guarantee against side effects. DNS resolvers may retry under their own rules.
 
-Redirects display `outcome: not_analyzed`, the destination and next-step guidance where applicable. Enter the canonical origin separately only if authorized. Denied requests, missing files and network errors are not reported as zero findings. HTTP 403 can reflect a provider restriction or website access denial. A page with no static social links does not prove there are no social accounts or JavaScript-loaded links.
+Redirects display `outcome: not_analyzed`, the destination and next-step guidance where applicable. For same-site HTTPS origin/`www` moves only, the contextual `r` shortcut makes one separate request after explicit user input. Enter the canonical origin separately only if authorized. Denied requests, missing files and network errors are not reported as zero findings. HTTP 403 can reflect a provider restriction or website access denial. A page with no static social links does not prove there are no social accounts or JavaScript-loaded links.
 
 Header, CAPTCHA, technology and pixel findings are observations, not proven vulnerabilities or complete assessments. Pulse associations do not conclusively establish maliciousness, and no matches do not establish safety. Lookups disclose indicators to providers. OTX uses existing indicator GETs only, not uploads, scan submissions or pulse creation. Archive URLs and sitemap entries are listed without fetching them.
 
 Intrusive scanning modules remain excluded. No automatic result files, reports, run logs or disk response caches are written. Terminal scrollback, external shell capture and provider logs may retain data. No legal or security certification is implied.
+
+[Varied-input module checks and useful examples](docs/VARIED-INPUT-VALIDATION.md).
 
 ## Verification
 

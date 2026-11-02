@@ -36,6 +36,5 @@ def logo(version: str, modules: int, author: str) -> None:
     content.append("\nTHREATHAWK\n", style="bold #FF6037")
     content.append("Threat intelligence · DNS · Website inspection\n\n", style="white")
     content.append(f"Version: {version}   Modules: {modules}   Coded by: {author}\n", style="bright_white")
-    content.append("TERMINAL ONLY · No results saved to disk", style="green")
     console.print(Panel(content, border_style="#FF6037", padding=(1,2)))
     console.print("Choose an option from the home menu below.", markup=False)
